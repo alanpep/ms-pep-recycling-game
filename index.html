@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sort It Out! — The Recycling Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Decorative background layers -->
+  <div class="bg-layer bg-layer--dots"></div>
+  <div class="bg-layer bg-layer--grain"></div>
+
+  <div id="game-container">
+
+    <!-- ==================== START SCREEN ==================== -->
+    <section id="screen-start" class="screen screen--active" aria-label="Start Screen">
+      <div class="start-content">
+        <div class="logo-wrap">
+          <span class="logo-icon" aria-hidden="true">♻️</span>
+          <h1 class="game-title">Sort It<br><span class="title-accent">Out!</span></h1>
+        </div>
+        <p class="tagline">Can you tell trash from treasure?<br>10 items. 10 chances. Zero waste.</p>
+        <button id="btn-start" class="btn btn--primary" aria-label="Start the game">
+          <span class="btn-text">Let's Go!</span>
+          <span class="btn-arrow" aria-hidden="true">→</span>
+        </button>
+        <p class="hint">🔊 Sound on for the full experience</p>
+      </div>
+      <div class="start-deco">
+        <div class="deco-bin deco-bin--trash" aria-hidden="true">🗑️</div>
+        <div class="deco-bin deco-bin--recycle" aria-hidden="true">♻️</div>
+      </div>
+    </section>
+
+    <!-- ==================== PLAY SCREEN ==================== -->
+    <section id="screen-play" class="screen" aria-label="Game Play">
+      <header class="hud">
+        <div class="hud-round">
+          <span class="hud-label">Round</span>
+          <span id="hud-round-num" class="hud-value">1</span>
+          <span class="hud-sep">/</span>
+          <span class="hud-value">10</span>
+        </div>
+        <div class="hud-score">
+          <span class="hud-label">Score</span>
+          <span id="hud-score-num" class="hud-value">0</span>
+        </div>
+      </header>
+
+      <div class="play-area">
+        <div class="item-card" id="item-card">
+          <div class="item-card__image-wrap">
+            <img id="item-image" src="" alt="" class="item-card__image">
+          </div>
+          <p id="item-name" class="item-card__name"></p>
+        </div>
+
+        <!-- Feedback overlay -->
+        <div id="feedback" class="feedback" aria-live="polite">
+          <span id="feedback-icon" class="feedback__icon"></span>
+          <span id="feedback-text" class="feedback__text"></span>
+        </div>
+      </div>
+
+      <div class="choices">
+        <button id="btn-trash" class="btn-choice btn-choice--trash" aria-label="Put in trash bin">
+          <span class="btn-choice__icon" aria-hidden="true">🗑️</span>
+          <span class="btn-choice__label">Trash</span>
+        </button>
+        <button id="btn-recycle" class="btn-choice btn-choice--recycle" aria-label="Put in recycling bin">
+          <span class="btn-choice__icon" aria-hidden="true">♻️</span>
+          <span class="btn-choice__label">Recycle</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==================== END SCREEN ==================== -->
+    <section id="screen-end" class="screen" aria-label="Game Over">
+      <div class="end-content">
+        <h2 id="end-title" class="end-title"></h2>
+        <div class="score-ring">
+          <svg viewBox="0 0 120 120" class="score-ring__svg">
+            <circle cx="60" cy="60" r="52" class="score-ring__bg"/>
+            <circle cx="60" cy="60" r="52" class="score-ring__fill" id="score-ring-fill"/>
+          </svg>
+          <span id="end-score" class="score-ring__number"></span>
+        </div>
+        <p id="end-message" class="end-message"></p>
+        <button id="btn-replay" class="btn btn--primary" aria-label="Play again">
+          <span class="btn-text">Play Again</span>
+          <span class="btn-arrow" aria-hidden="true">↺</span>
+        </button>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Audio elements (preloaded) -->
+  <audio id="sound-start" preload="auto" src="assets/sounds/start.mp3"></audio>
+  <audio id="sound-correct" preload="auto" src="assets/sounds/correct.mp3"></audio>
+  <audio id="sound-incorrect" preload="auto" src="assets/sounds/incorrect.mp3"></audio>
+  <audio id="sound-end" preload="auto" src="assets/sounds/end.mp3"></audio>
+
+  <script src="js/game.js"></script>
+</body>
+</html>
