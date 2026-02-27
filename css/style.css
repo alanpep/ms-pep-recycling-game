@@ -462,9 +462,10 @@ body {
 }
 
 .item-card__image {
-  max-width: 90%;
-  max-height: 90%;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: calc(var(--radius-md) - 2px);
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
 

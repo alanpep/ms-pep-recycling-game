@@ -3,28 +3,29 @@
    ============================================================ */
 
 // ---- Item Database ----
-// Each item: { id, name, emoji (used as placeholder image), isRecyclable }
+// Each item: { id, name, imagePath, isRecyclable }
+// Photos are stored in assets/images/ as .jpg or .png
 const ITEMS = [
-  { id: 'aluminum-can',    name: 'Aluminum Can',      emoji: '🥫', isRecyclable: true  },
-  { id: 'glass-bottle',    name: 'Glass Bottle',      emoji: '🍾', isRecyclable: true  },
-  { id: 'newspaper',       name: 'Newspaper',         emoji: '📰', isRecyclable: true  },
-  { id: 'cardboard-box',   name: 'Cardboard Box',     emoji: '📦', isRecyclable: true  },
-  { id: 'plastic-bottle',  name: 'Plastic Bottle',    emoji: '🧴', isRecyclable: true  },
-  { id: 'tin-can',         name: 'Tin Can',           emoji: '🥫', isRecyclable: true  },
-  { id: 'paper-bag',       name: 'Paper Bag',         emoji: '🛍️', isRecyclable: true  },
-  { id: 'milk-jug',        name: 'Milk Jug',          emoji: '🥛', isRecyclable: true  },
-  { id: 'banana-peel',     name: 'Banana Peel',       emoji: '🍌', isRecyclable: false },
-  { id: 'used-napkin',     name: 'Used Napkin',       emoji: '🧻', isRecyclable: false },
-  { id: 'plastic-bag',     name: 'Plastic Bag',       emoji: '🛒', isRecyclable: false },
-  { id: 'styrofoam-cup',   name: 'Styrofoam Cup',     emoji: '🥤', isRecyclable: false },
-  { id: 'food-wrapper',    name: 'Food Wrapper',      emoji: '🍬', isRecyclable: false },
-  { id: 'broken-mirror',   name: 'Broken Mirror',     emoji: '🪞', isRecyclable: false },
-  { id: 'diaper',          name: 'Dirty Diaper',      emoji: '🧷', isRecyclable: false },
-  { id: 'pizza-box-dirty', name: 'Greasy Pizza Box',  emoji: '🍕', isRecyclable: false },
-  { id: 'cereal-box',      name: 'Cereal Box',        emoji: '🥣', isRecyclable: true  },
-  { id: 'egg-carton',      name: 'Egg Carton',        emoji: '🥚', isRecyclable: true  },
-  { id: 'chip-bag',        name: 'Chip Bag',          emoji: '🍟', isRecyclable: false },
-  { id: 'rubber-glove',    name: 'Rubber Glove',      emoji: '🧤', isRecyclable: false },
+  { id: 'aluminum-can',    name: 'Aluminum Can',      imagePath: 'assets/images/aluminum-can.png',     isRecyclable: true  },
+  { id: 'glass-bottle',    name: 'Glass Bottle',      imagePath: 'assets/images/glass-bottle.png',     isRecyclable: true  },
+  { id: 'newspaper',       name: 'Newspaper',         imagePath: 'assets/images/newspaper.jpg',        isRecyclable: true  },
+  { id: 'cardboard-box',   name: 'Cardboard Box',     imagePath: 'assets/images/cardboard-box.jpg',    isRecyclable: true  },
+  { id: 'plastic-bottle',  name: 'Plastic Bottle',    imagePath: 'assets/images/plastic-bottle.jpg',   isRecyclable: true  },
+  { id: 'tin-can',         name: 'Tin Can',           imagePath: 'assets/images/tin-can.jpg',          isRecyclable: true  },
+  { id: 'paper-bag',       name: 'Paper Bag',         imagePath: 'assets/images/paper-bag.jpg',        isRecyclable: true  },
+  { id: 'milk-jug',        name: 'Milk Jug',          imagePath: 'assets/images/milk-jug.jpg',         isRecyclable: true  },
+  { id: 'banana-peel',     name: 'Banana Peel',       imagePath: 'assets/images/banana-peel.jpg',      isRecyclable: false },
+  { id: 'used-napkin',     name: 'Used Napkin',       imagePath: 'assets/images/used-napkin.jpg',      isRecyclable: false },
+  { id: 'plastic-bag',     name: 'Plastic Bag',       imagePath: 'assets/images/plastic-bag.jpg',      isRecyclable: false },
+  { id: 'styrofoam-cup',   name: 'Styrofoam Cup',     imagePath: 'assets/images/styrofoam-cup.jpg',    isRecyclable: false },
+  { id: 'food-wrapper',    name: 'Food Wrapper',      imagePath: 'assets/images/food-wrapper.jpg',     isRecyclable: false },
+  { id: 'broken-mirror',   name: 'Broken Mirror',     imagePath: 'assets/images/broken-mirror.png',    isRecyclable: false },
+  { id: 'diaper',          name: 'Dirty Diaper',      imagePath: 'assets/images/diaper.jpg',           isRecyclable: false },
+  { id: 'pizza-box-dirty', name: 'Greasy Pizza Box',  imagePath: 'assets/images/pizza-box-dirty.jpg',  isRecyclable: false },
+  { id: 'cereal-box',      name: 'Cereal Box',        imagePath: 'assets/images/cereal-box.jpg',       isRecyclable: true  },
+  { id: 'egg-carton',      name: 'Egg Carton',        imagePath: 'assets/images/egg-carton.jpg',       isRecyclable: true  },
+  { id: 'chip-bag',        name: 'Chip Bag',          imagePath: 'assets/images/chip-bag.jpg',         isRecyclable: false },
+  { id: 'rubber-glove',    name: 'Rubber Glove',      imagePath: 'assets/images/rubber-glove.jpg',     isRecyclable: false },
 ];
 
 const TOTAL_ROUNDS = 10;
@@ -152,32 +153,14 @@ function showCurrentItem() {
   dom.itemCard.classList.add('item-card--exit');
 
   setTimeout(() => {
-    // Use emoji as placeholder; if a real image exists, use imagePath
-    if (item.imagePath) {
-      dom.itemImage.src = item.imagePath;
-      dom.itemImage.alt = item.name;
-      dom.itemImage.style.display = 'block';
-    } else {
-      // Render emoji as a large text in an SVG data URI for clean display
-      dom.itemImage.src = emojiToDataUri(item.emoji);
-      dom.itemImage.alt = item.name;
-      dom.itemImage.style.display = 'block';
-    }
+    dom.itemImage.src = item.imagePath;
+    dom.itemImage.alt = item.name;
 
     dom.itemName.textContent = item.name;
 
     dom.itemCard.classList.remove('item-card--exit');
     dom.itemCard.classList.add('item-card--enter');
   }, 250);
-}
-
-// ---- Convert emoji to a clean data-URI image ----
-function emojiToDataUri(emoji) {
-  const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="160" height="160">
-      <text x="50" y="62" font-size="64" text-anchor="middle" dominant-baseline="central">${emoji}</text>
-    </svg>`;
-  return `data:image/svg+xml,${encodeURIComponent(svg.trim())}`;
 }
 
 // ---- Show Feedback ----
