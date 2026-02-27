@@ -13,7 +13,7 @@ const ITEMS = [
   { id: 'plastic-bottle',  name: 'Plastic Bottle',    imagePath: 'assets/images/plastic-bottle.jpg',   isRecyclable: true  },
   { id: 'tin-can',         name: 'Tin Can',           imagePath: 'assets/images/tin-can.jpg',          isRecyclable: true  },
   { id: 'paper-bag',       name: 'Paper Bag',         imagePath: 'assets/images/paper-bag.jpg',        isRecyclable: true  },
-  { id: 'milk-jug',        name: 'Milk Jug',          imagePath: 'assets/images/milk-jug.jpg',         isRecyclable: true  },
+  { id: 'milk-jug',        name: 'Empty Milk Jug',    imagePath: 'assets/images/milk-jug.jpg',         isRecyclable: true  },
   { id: 'banana-peel',     name: 'Banana Peel',       imagePath: 'assets/images/banana-peel.jpg',      isRecyclable: false },
   { id: 'used-napkin',     name: 'Used Napkin',       imagePath: 'assets/images/used-napkin.jpg',      isRecyclable: false },
   { id: 'plastic-bag',     name: 'Plastic Bag',       imagePath: 'assets/images/plastic-bag.jpg',      isRecyclable: false },
