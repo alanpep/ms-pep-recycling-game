@@ -26,6 +26,8 @@ const ITEMS = [
   { id: 'egg-carton',      name: 'Egg Carton',        imagePath: 'assets/images/egg-carton.jpg',       isRecyclable: true  },
   { id: 'chip-bag',        name: 'Chip Bag',          imagePath: 'assets/images/chip-bag.jpg',         isRecyclable: false },
   { id: 'rubber-glove',    name: 'Rubber Glove',      imagePath: 'assets/images/rubber-glove.jpg',     isRecyclable: false },
+  { id: 'paper',           name: 'Paper',             imagePath: 'assets/images/paper.jpg',            isRecyclable: true  },
+  { id: 'candy-wrapper',   name: 'Candy Wrapper',     imagePath: 'assets/images/candy-wrapper.jpg',    isRecyclable: false },
 ];
 
 const TOTAL_ROUNDS = 10;
