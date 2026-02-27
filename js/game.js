@@ -6,7 +6,7 @@
 // Each item: { id, name, imagePath, isRecyclable }
 // Photos are stored in assets/images/ as .jpg or .png
 const ITEMS = [
-  { id: 'aluminum-can',    name: 'Aluminum Can',      imagePath: 'assets/images/aluminum-can.png',     isRecyclable: true  },
+  { id: 'aluminum-can',    name: 'Aluminum Can',      imagePath: 'assets/images/aluminum-can.jpg',     isRecyclable: true  },
   { id: 'glass-bottle',    name: 'Glass Bottle',      imagePath: 'assets/images/glass-bottle.png',     isRecyclable: true  },
   { id: 'newspaper',       name: 'Newspaper',         imagePath: 'assets/images/newspaper.jpg',        isRecyclable: true  },
   { id: 'cardboard-box',   name: 'Cardboard Box',     imagePath: 'assets/images/cardboard-box.jpg',    isRecyclable: true  },
