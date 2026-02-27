@@ -28,9 +28,9 @@ const ITEMS = [
   { id: 'rubber-glove',    name: 'Rubber Glove',      imagePath: 'assets/images/rubber-glove.jpg',     isRecyclable: false },
   { id: 'paper',           name: 'Paper',             imagePath: 'assets/images/paper.jpg',            isRecyclable: true  },
   { id: 'candy-wrapper',   name: 'Candy Wrapper',     imagePath: 'assets/images/candy-wrapper.jpg',    isRecyclable: false },
-  { id: 'cardboard-tube',  name: 'Cardboard Tube',    imagePath: 'assets/images/cardboard-tube.jpg',   isRecyclable: true  },
-  { id: 'toothbrush',      name: 'Toothbrush',        imagePath: 'assets/images/toothbrush.jpg',       isRecyclable: false },
-  { id: 'straw',           name: 'Plastic Straw',     imagePath: 'assets/images/straw.jpg',            isRecyclable: false },
+  { id: 'toilet-paper-roll',  name: 'Toilet Paper Roll',    imagePath: 'assets/images/toilet-paper-roll.png',   isRecyclable: true  },
+  { id: 'toothbrush',      name: 'Toothbrush',        imagePath: 'assets/images/toothbrush.png',       isRecyclable: false },
+  { id: 'plastic-straw',   name: 'Plastic Straw',     imagePath: 'assets/images/plastic-straw.jpg',            isRecyclable: false },
   { id: 'bubble-wrap',     name: 'Bubble Wrap',       imagePath: 'assets/images/bubble-wrap.jpg',      isRecyclable: false },
   { id: 'glass-jar',       name: 'Glass Jar',         imagePath: 'assets/images/glass-jar.jpg',        isRecyclable: true  },
 ];
