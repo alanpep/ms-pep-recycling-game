@@ -44,6 +44,7 @@ const state = {
   round: 0,
   score: 0,
   items: [],
+  incorrectItems: [], // tracks items the player got wrong
   isProcessing: false, // prevents double-clicks during feedback
 };
 
@@ -72,6 +73,7 @@ const dom = {
   endTitle:     document.getElementById('end-title'),
   endScore:     document.getElementById('end-score'),
   endMessage:   document.getElementById('end-message'),
+  endSummary:   document.getElementById('end-summary'),
   scoreRingFill: document.getElementById('score-ring-fill'),
 
   soundStart:   document.getElementById('sound-start'),
@@ -205,6 +207,7 @@ function checkAnswer(playerSaidRecyclable) {
     btn.classList.add('btn-choice--flash-correct');
     setTimeout(() => btn.classList.remove('btn-choice--flash-correct'), 600);
   } else {
+    state.incorrectItems.push({ item, playerSaidRecyclable });
     playSound(dom.soundIncorrect);
     // Flash the wrong button
     const btn = playerSaidRecyclable ? dom.btnRecycle : dom.btnTrash;
@@ -240,6 +243,7 @@ function startGame() {
   state.round = 0;
   state.score = 0;
   state.items = pickItems(TOTAL_ROUNDS);
+  state.incorrectItems = [];
   state.isProcessing = false;
 
   playSound(dom.soundStart);
@@ -296,6 +300,27 @@ function endGame() {
   } else {
     dom.endTitle.textContent = '🤔 Keep Learning!';
     dom.endMessage.textContent = 'Sorting waste takes practice. Give it another go!';
+  }
+
+  // Build incorrect-items summary
+  if (state.incorrectItems.length > 0) {
+    dom.endSummary.innerHTML = `
+      <h3 class="summary-title">Items you missed:</h3>
+      <ul class="summary-list">
+        ${state.incorrectItems.map(({ item }) => `
+          <li class="summary-item">
+            <img src="${item.imagePath}" alt="${item.name}" class="summary-item__img">
+            <div class="summary-item__info">
+              <span class="summary-item__name">❌ ${item.name}</span>
+              <span class="summary-item__answer">${item.isRecyclable ? '♻️ Recyclable' : '🗑️ Trash'}</span>
+            </div>
+          </li>
+        `).join('')}
+      </ul>`;
+    dom.endSummary.style.display = 'block';
+  } else {
+    dom.endSummary.innerHTML = '';
+    dom.endSummary.style.display = 'none';
   }
 
   // Confetti for good scores
