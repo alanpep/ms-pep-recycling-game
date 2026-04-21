@@ -20,7 +20,8 @@ app.use(express.static(__dirname)); // serve index.html, css/, js/, assets/
 // ---- Helper: load scores from disk ----
 function loadScores() {
   try {
-    return JSON.parse(fs.readFileSync(SCORES_FILE, 'utf8'));
+    const data = JSON.parse(fs.readFileSync(SCORES_FILE, 'utf8'));
+    return Array.isArray(data) ? data : [];
   } catch {
     return [];
   }

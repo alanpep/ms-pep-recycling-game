@@ -83,6 +83,13 @@ const dom = {
   playerNameInput:   document.getElementById('player-name-input'),
   btnSaveScore:      document.getElementById('btn-save-score'),
 
+  btnViewScores:         document.getElementById('btn-view-scores'),
+  scoresModal:           document.getElementById('scores-modal'),
+  scoresModalBackdrop:   document.querySelector('.scores-modal__backdrop'),
+  btnCloseScores:        document.getElementById('btn-close-scores'),
+  modalPersonalBestList: document.getElementById('modal-personal-best-list'),
+  modalGlobalScoresList: document.getElementById('modal-global-scores-list'),
+
   soundStart:     [...document.querySelectorAll('.sound-start')],
   soundCorrect:   [...document.querySelectorAll('.sound-correct')],
   soundIncorrect: [...document.querySelectorAll('.sound-incorrect')],
@@ -497,11 +504,62 @@ function showHighScoreSection(newScore) {
   };
 }
 
+// ---- High Scores Modal (Start Screen) ----
+function openScoresModal() {
+  dom.scoresModal.hidden = false;
+  // Populate with fresh data
+  const pb = loadPersonalBest();
+  const pbList = dom.modalPersonalBestList;
+  pbList.innerHTML = '';
+  if (!pb) {
+    pbList.innerHTML = '<li class="highscore-list__empty">No best yet!</li>';
+  } else {
+    const li = document.createElement('li');
+    li.className = 'highscore-list__item';
+    li.innerHTML = `
+      <span class="hs-rank">⭐</span>
+      <span class="hs-name">${escapeHtml(pb.name)}</span>
+      <span class="hs-score">${pb.score}<span class="hs-total">/${TOTAL_ROUNDS}</span></span>`;
+    pbList.appendChild(li);
+  }
+  dom.modalGlobalScoresList.innerHTML = '<li class="highscore-list__empty">Loading…</li>';
+  fetch(API)
+    .then(r => r.json())
+    .then(scores => {
+      const list = dom.modalGlobalScoresList;
+      list.innerHTML = '';
+      if (!scores || scores.length === 0) {
+        list.innerHTML = '<li class="highscore-list__empty">No scores yet!</li>';
+        return;
+      }
+      scores.forEach((entry, i) => {
+        const li = document.createElement('li');
+        li.className = 'highscore-list__item';
+        const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`;
+        li.innerHTML = `
+          <span class="hs-rank">${medal}</span>
+          <span class="hs-name">${escapeHtml(entry.name)}</span>
+          <span class="hs-score">${entry.score}<span class="hs-total">/${TOTAL_ROUNDS}</span></span>`;
+        list.appendChild(li);
+      });
+    })
+    .catch(() => {
+      dom.modalGlobalScoresList.innerHTML = '<li class="highscore-list__empty">Scores unavailable offline.</li>';
+    });
+}
+
+function closeScoresModal() {
+  dom.scoresModal.hidden = true;
+}
+
 // ---- Event Listeners ----
 dom.btnStart.addEventListener('click', startGame);
 dom.btnReplay.addEventListener('click', startGame);
 dom.btnTrash.addEventListener('click', () => checkAnswer(false));
 dom.btnRecycle.addEventListener('click', () => checkAnswer(true));
+dom.btnViewScores.addEventListener('click', openScoresModal);
+dom.btnCloseScores.addEventListener('click', closeScoresModal);
+dom.scoresModalBackdrop.addEventListener('click', closeScoresModal);
 
 // Keyboard support: Left arrow = Trash, Right arrow = Recycle
 document.addEventListener('keydown', (e) => {
@@ -516,6 +574,10 @@ document.addEventListener('keydown', (e) => {
 
 // Start game with Enter/Space on start screen
 document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && !dom.scoresModal.hidden) {
+    closeScoresModal();
+    return;
+  }
   if (state.status === 'not-started' && (e.key === 'Enter' || e.key === ' ')) {
     e.preventDefault();
     startGame();

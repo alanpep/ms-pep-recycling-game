@@ -332,6 +332,25 @@ body {
     0 2px 8px rgba(0,0,0,0.1);
 }
 
+.btn--scores {
+  background: var(--color-forest);
+  box-shadow: 0 4px 0 var(--color-forest-deep), 0 8px 16px rgba(0,0,0,0.12);
+  animation-delay: 0.75s;
+  margin-top: calc(var(--space-sm) * -1);
+}
+
+.btn--scores:hover {
+  box-shadow:
+    0 5px 0 var(--color-forest-deep),
+    0 10px 24px rgba(0,0,0,0.15);
+}
+
+.btn--scores:active {
+  box-shadow:
+    0 1px 0 var(--color-forest-deep),
+    0 2px 8px rgba(0,0,0,0.1);
+}
+
 .btn-arrow {
   font-size: 1.3em;
   transition: transform var(--duration-fast) var(--ease-bounce);
@@ -992,6 +1011,81 @@ body {
     opacity: 0;
     transform: translateY(100vh) rotate(720deg);
   }
+}
+
+/* ============================================================
+   HIGH SCORES MODAL
+   ============================================================ */
+
+.scores-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scores-modal[hidden] {
+  display: none;
+}
+
+.scores-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(3px);
+}
+
+.scores-modal__panel {
+  position: relative;
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl) var(--space-xl) var(--space-lg);
+  width: min(90vw, 540px);
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  animation: fadeUp 0.3s var(--ease-smooth) both;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.scores-modal__title {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: var(--color-forest-deep);
+  margin: 0;
+}
+
+.scores-modal__close {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  background: var(--color-cream);
+  border: none;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  line-height: 1;
+  color: var(--color-forest-deep);
+  transition: background var(--duration-fast);
+}
+
+.scores-modal__close:hover {
+  background: var(--color-kraft-light);
+}
+
+.highscore-boards--modal {
+  display: flex;
+  gap: var(--space-md);
+  width: 100%;
+  margin-top: 0;
+  animation: none;
 }
 
 /* ============================================================

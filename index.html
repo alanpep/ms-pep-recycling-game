@@ -28,6 +28,9 @@
           <span class="btn-text">Let's Go!</span>
           <span class="btn-arrow" aria-hidden="true">→</span>
         </button>
+        <button id="btn-view-scores" class="btn btn--scores" aria-label="View high scores">
+          <span class="btn-text">🏆 High Scores</span>
+        </button>
         <p class="hint">🔊 Sound on for the full experience</p>
       </div>
       <div class="start-deco">
@@ -122,9 +125,26 @@
       </div>
     </section>
 
-  </div>
+  </div><!-- /#game-container -->
 
-  <!-- Audio elements (preloaded) -->
+  <!-- ==================== HIGH SCORES MODAL ==================== -->
+  <div id="scores-modal" class="scores-modal" role="dialog" aria-modal="true" aria-label="High Scores" hidden>
+    <div class="scores-modal__backdrop"></div>
+    <div class="scores-modal__panel">
+      <button id="btn-close-scores" class="scores-modal__close" aria-label="Close high scores">✕</button>
+      <h2 class="scores-modal__title">🏆 High Scores</h2>
+      <div class="highscore-boards highscore-boards--modal">
+        <div class="highscore-board highscore-board--personal">
+          <h3 class="highscore-board__title">⭐ Your Best</h3>
+          <ol id="modal-personal-best-list" class="highscore-list"></ol>
+        </div>
+        <div class="highscore-board highscore-board--global">
+          <h3 class="highscore-board__title">🌍 Top Scores</h3>
+          <ol id="modal-global-scores-list" class="highscore-list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
   <audio class="sound-start" preload="auto" src="assets/sounds/start1.m4a"></audio>
   <audio class="sound-correct" preload="auto" src="assets/sounds/correct1.m4a"></audio>
   <audio class="sound-correct" preload="auto" src="assets/sounds/correct2.m4a"></audio>
