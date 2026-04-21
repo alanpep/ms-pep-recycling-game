@@ -172,11 +172,33 @@ function showCurrentItem() {
   dom.itemCard.classList.remove('item-card--enter');
   dom.itemCard.classList.add('item-card--exit');
 
+  // Clear the old image immediately so it never shows during the transition
+  dom.itemImage.src = '';
+  dom.itemImage.style.visibility = 'hidden';
+  dom.itemCard.classList.add('item-card--loading');
+
+  // Preload the next image right away (in parallel with the exit animation)
+  const preload = new Image();
+  preload.src = item.imagePath;
+
   setTimeout(() => {
-    dom.itemImage.src = item.imagePath;
+    dom.itemName.textContent = item.name;
     dom.itemImage.alt = item.name;
 
-    dom.itemName.textContent = item.name;
+    const revealImage = () => {
+      dom.itemImage.src = item.imagePath;
+      dom.itemImage.style.visibility = 'visible';
+      dom.itemCard.classList.remove('item-card--loading');
+    };
+
+    if (preload.complete) {
+      // Already loaded (cached or fast connection)
+      revealImage();
+    } else {
+      // Still downloading — wait for it before revealing
+      preload.onload = revealImage;
+      preload.onerror = revealImage; // show anyway on error
+    }
 
     dom.itemCard.classList.remove('item-card--exit');
     dom.itemCard.classList.add('item-card--enter');

@@ -472,6 +472,18 @@ body {
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
 
+/* Loading shimmer while next image downloads */
+.item-card--loading .item-card__image-wrap {
+  background: linear-gradient(90deg, var(--color-cream) 25%, #e8e0d0 50%, var(--color-cream) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
 .item-card__name {
   font-family: var(--font-display);
   font-size: 1.4rem;
