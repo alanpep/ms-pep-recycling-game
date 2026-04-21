@@ -1,0 +1,13 @@
+{
+  "name": "ms-pep-recycling-game",
+  "version": "1.0.0",
+  "description": "Mrs. Pep's Sort It Out! recycling game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

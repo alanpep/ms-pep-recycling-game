@@ -91,10 +91,34 @@
         </div>
         <p id="end-message" class="end-message"></p>
         <div id="end-summary" class="end-summary" style="display:none;"></div>
+
+        <!-- High Score Entry -->
+        <div id="highscore-entry" class="highscore-entry" style="display:none;">
+          <p class="highscore-entry__label">Save your score!</p>
+          <div class="highscore-entry__row">
+            <input id="player-name-input" class="highscore-entry__input" type="text" maxlength="20" placeholder="Your name…" aria-label="Enter your name">
+            <button id="btn-save-score" class="btn btn--forest" aria-label="Save score">Save</button>
+          </div>
+        </div>
+
         <button id="btn-replay" class="btn btn--primary" aria-label="Play again">
           <span class="btn-text">Play Again</span>
           <span class="btn-arrow" aria-hidden="true">↺</span>
         </button>
+
+        <!-- Dual High Score Boards -->
+        <div id="highscore-boards" class="highscore-boards" style="display:none;">
+          <!-- Personal Best (localStorage) -->
+          <div class="highscore-board highscore-board--personal">
+            <h3 class="highscore-board__title">⭐ Your Best</h3>
+            <ol id="personal-best-list" class="highscore-list"></ol>
+          </div>
+          <!-- Server-side All Scores -->
+          <div class="highscore-board highscore-board--global">
+            <h3 class="highscore-board__title">🏆 Top Scores</h3>
+            <ol id="global-scores-list" class="highscore-list"></ol>
+          </div>
+        </div>
       </div>
     </section>
 

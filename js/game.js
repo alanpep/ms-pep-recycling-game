@@ -76,6 +76,13 @@ const dom = {
   endSummary:   document.getElementById('end-summary'),
   scoreRingFill: document.getElementById('score-ring-fill'),
 
+  highscoreEntry:    document.getElementById('highscore-entry'),
+  highscoreBoards:   document.getElementById('highscore-boards'),
+  personalBestList:  document.getElementById('personal-best-list'),
+  globalScoresList:  document.getElementById('global-scores-list'),
+  playerNameInput:   document.getElementById('player-name-input'),
+  btnSaveScore:      document.getElementById('btn-save-score'),
+
   soundStart:     [...document.querySelectorAll('.sound-start')],
   soundCorrect:   [...document.querySelectorAll('.sound-correct')],
   soundIncorrect: [...document.querySelectorAll('.sound-incorrect')],
@@ -250,6 +257,10 @@ function startGame() {
   state.incorrectItems = [];
   state.isProcessing = false;
 
+  // Hide high score UI from previous game
+  dom.highscoreEntry.style.display = 'none';
+  dom.highscoreBoards.style.display = 'none';
+
   playSound(pickRandom(dom.soundStart));
 
   dom.btnTrash.disabled = false;
@@ -342,6 +353,126 @@ function endGame() {
   if (pct >= 0.7) {
     setTimeout(launchConfetti, 800);
   }
+
+  // Show high score entry / board
+  setTimeout(() => showHighScoreSection(state.score), 600);
+}
+
+// ---- High Score Helpers ----
+
+// -- Personal Best (localStorage, single top score) --
+const PB_KEY = 'sortItOut_personalBest';
+
+function loadPersonalBest() {
+  try {
+    return JSON.parse(localStorage.getItem(PB_KEY)) || null;
+  } catch {
+    return null;
+  }
+}
+
+function savePersonalBest(name, score) {
+  const current = loadPersonalBest();
+  if (!current || score > current.score) {
+    const entry = { name, score, date: Date.now() };
+    localStorage.setItem(PB_KEY, JSON.stringify(entry));
+    return { entry, improved: true };
+  }
+  return { entry: current, improved: false };
+}
+
+function renderPersonalBest(highlightNew) {
+  const entry = loadPersonalBest();
+  const list = dom.personalBestList;
+  list.innerHTML = '';
+  if (!entry) {
+    list.innerHTML = '<li class="highscore-list__empty">No best yet!</li>';
+    return;
+  }
+  const li = document.createElement('li');
+  li.className = 'highscore-list__item' + (highlightNew ? ' highscore-list__item--new' : '');
+  li.innerHTML = `
+    <span class="hs-rank">⭐</span>
+    <span class="hs-name">${escapeHtml(entry.name)}</span>
+    <span class="hs-score">${entry.score}<span class="hs-total">/${TOTAL_ROUNDS}</span></span>`;
+  list.appendChild(li);
+}
+
+// -- Global Leaderboard (server-side) --
+const API = '/api/scores';
+
+function renderGlobalScores(scores, highlightName) {
+  const list = dom.globalScoresList;
+  list.innerHTML = '';
+  if (!scores || scores.length === 0) {
+    list.innerHTML = '<li class="highscore-list__empty">No scores yet!</li>';
+    return;
+  }
+  // Show all scores
+  scores.forEach((entry, i) => {
+    const li = document.createElement('li');
+    li.className = 'highscore-list__item';
+    if (highlightName && entry.name === highlightName && i === scores.findIndex(s => s.name === highlightName)) {
+      li.classList.add('highscore-list__item--new');
+    }
+    const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`;
+    li.innerHTML = `
+      <span class="hs-rank">${medal}</span>
+      <span class="hs-name">${escapeHtml(entry.name)}</span>
+      <span class="hs-score">${entry.score}<span class="hs-total">/${TOTAL_ROUNDS}</span></span>`;
+    list.appendChild(li);
+  });
+}
+
+function setGlobalLoading(msg) {
+  dom.globalScoresList.innerHTML = `<li class="highscore-list__empty">${msg}</li>`;
+}
+
+function fetchAndRenderGlobal(highlightName) {
+  setGlobalLoading('Loading…');
+  fetch(API)
+    .then(r => r.json())
+    .then(scores => renderGlobalScores(scores, highlightName))
+    .catch(() => setGlobalLoading('Scores unavailable offline.'));
+}
+
+// -- Shared utilities --
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function showHighScoreSection(newScore) {
+  dom.playerNameInput.value = '';
+  dom.highscoreEntry.style.display = 'block';
+
+  // Show boards immediately with current data
+  renderPersonalBest(false);
+  fetchAndRenderGlobal(null);
+  dom.highscoreBoards.style.display = 'flex';
+
+  dom.btnSaveScore.onclick = () => {
+    const name = dom.playerNameInput.value.trim() || 'Anonymous';
+    dom.highscoreEntry.style.display = 'none';
+
+    // Save personal best
+    const { improved } = savePersonalBest(name, newScore);
+    renderPersonalBest(improved);
+
+    // Submit to server
+    setGlobalLoading('Saving…');
+    fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, score: newScore }),
+    })
+      .then(r => r.json())
+      .then(scores => renderGlobalScores(scores, name))
+      .catch(() => setGlobalLoading('Could not save — server unavailable.'));
+  };
+
+  dom.playerNameInput.onkeydown = (e) => {
+    if (e.key === 'Enter') dom.btnSaveScore.click();
+  };
 }
 
 // ---- Event Listeners ----
@@ -368,6 +499,7 @@ document.addEventListener('keydown', (e) => {
     startGame();
   }
   if (state.status === 'finished' && (e.key === 'Enter' || e.key === ' ')) {
+    if (document.activeElement === dom.playerNameInput) return;
     e.preventDefault();
     startGame();
   }
