@@ -76,10 +76,10 @@ const dom = {
   endSummary:   document.getElementById('end-summary'),
   scoreRingFill: document.getElementById('score-ring-fill'),
 
-  soundStart:   document.getElementById('sound-start'),
-  soundCorrect: document.getElementById('sound-correct'),
-  soundIncorrect: document.getElementById('sound-incorrect'),
-  soundEnd:     document.getElementById('sound-end'),
+  soundStart:     [...document.querySelectorAll('.sound-start')],
+  soundCorrect:   [...document.querySelectorAll('.sound-correct')],
+  soundIncorrect: [...document.querySelectorAll('.sound-incorrect')],
+  soundEnd:       [...document.querySelectorAll('.sound-end')],
 };
 
 // ---- Utility: Fisher-Yates Shuffle ----
@@ -107,6 +107,10 @@ function pickItems(count) {
 }
 
 // ---- Audio Helpers ----
+function pickRandom(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
 function playSound(audioEl) {
   if (!audioEl) return;
   audioEl.currentTime = 0;
@@ -201,14 +205,14 @@ function checkAnswer(playerSaidRecyclable) {
 
   if (isCorrect) {
     state.score++;
-    playSound(dom.soundCorrect);
+    playSound(pickRandom(dom.soundCorrect));
     // Flash the correct button
     const btn = playerSaidRecyclable ? dom.btnRecycle : dom.btnTrash;
     btn.classList.add('btn-choice--flash-correct');
     setTimeout(() => btn.classList.remove('btn-choice--flash-correct'), 600);
   } else {
     state.incorrectItems.push({ item, playerSaidRecyclable });
-    playSound(dom.soundIncorrect);
+    playSound(pickRandom(dom.soundIncorrect));
     // Flash the wrong button
     const btn = playerSaidRecyclable ? dom.btnRecycle : dom.btnTrash;
     btn.classList.add('btn-choice--flash-incorrect');
@@ -246,7 +250,7 @@ function startGame() {
   state.incorrectItems = [];
   state.isProcessing = false;
 
-  playSound(dom.soundStart);
+  playSound(pickRandom(dom.soundStart));
 
   dom.btnTrash.disabled = false;
   dom.btnRecycle.disabled = false;
@@ -259,7 +263,18 @@ function startGame() {
 function endGame() {
   state.status = 'finished';
 
-  playSound(dom.soundEnd);
+  // Pick end sound based on score
+  const endSounds = { perfect: null, high: null, low: null };
+  dom.soundEnd.forEach(el => {
+    if (el.src.includes('end_perfect')) endSounds.perfect = el;
+    else if (el.src.includes('end_high')) endSounds.high = el;
+    else endSounds.low = el;
+  });
+  const endSound = state.score === 10 ? endSounds.perfect
+    : state.score >= 8 ? endSounds.high
+    : endSounds.low;
+  playSound(endSound);
+
   showScreen(dom.screenEnd);
 
   // Populate end screen
