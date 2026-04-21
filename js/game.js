@@ -33,6 +33,10 @@ const ITEMS = [
   { id: 'plastic-straw',   name: 'Plastic Straw',     imagePath: 'assets/images/plastic-straw.jpg',            isRecyclable: false },
   { id: 'bubble-wrap',     name: 'Bubble Wrap',       imagePath: 'assets/images/bubble-wrap.jpg',      isRecyclable: false },
   { id: 'glass-jar',       name: 'Glass Jar',         imagePath: 'assets/images/glass-jar.jpg',        isRecyclable: true  },
+  { id: 'shampoo-bottle',  name: 'Shampoo Bottle',    imagePath: 'assets/images/shampoo-bottle.png',   isRecyclable: true  },
+  { id: 'ceramic-mug',     name: 'Ceramic Mug',       imagePath: 'assets/images/ceramic-mug.jpg',      isRecyclable: false },
+  { id: 'paper-towel',     name: 'Used Paper Towel',  imagePath: 'assets/images/paper-towel.png',      isRecyclable: false },
+  { id: 'medical-waste',   name: 'Band-Aid',          imagePath: 'assets/images/medical-waste.jpg',    isRecyclable: false },
 ];
 
 const TOTAL_ROUNDS = 10;
